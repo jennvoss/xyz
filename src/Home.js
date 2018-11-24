@@ -44,7 +44,6 @@ class App extends Component {
       };
     });
   }
-
   updateItem = i => {
     const newValue = {
       ...(this.props.dates[this.state.selectedDate] || this.state.activeItems),
@@ -52,7 +51,6 @@ class App extends Component {
     };
     const datesRef = 'users/' + this.props.uid + '/dates/' + this.state.selectedDate;
     db.ref(datesRef).set(newValue);
-
   }
   getHeading() {
     const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
