@@ -1,0 +1,12 @@
+.settings ul {
+  display: inline-block;
+}
+.settings form {
+  margin-bottom: 2em;
+}
+.settings form label {
+  display: block;
+}
+.settings h2 {
+  font-size: 1em;
+}
