@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { db } from './constants';
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class App extends Component {
     return newList;
   };
   formatDate(date) {
-    return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('/');
+    return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('-');
   }
   adjustDay(days) {
     var result = new Date(this.state.selectedDate);
@@ -28,10 +29,10 @@ class App extends Component {
   }
   previous = () => {
     this.setState({selectedDate: this.adjustDay(-1)});
-  };
+  }
   next = () => {
     this.setState({selectedDate: this.adjustDay(1)});
-  };
+  }
   getItems(id) {
     let itemsForDate = this.props.dates[id] || this.state.activeItems;
 
@@ -45,28 +46,23 @@ class App extends Component {
   }
 
   updateItem = i => {
-    const objToUpdate =
-      this.props.dates[this.state.selectedDate] || this.state.activeItems;
+    const newValue = {
+      ...(this.props.dates[this.state.selectedDate] || this.state.activeItems),
+      [i.key]: !i.value
+    };
+    const datesRef = 'users/' + this.props.uid + '/dates/' + this.state.selectedDate;
+    db.ref(datesRef).set(newValue);
 
-    this.setState({
-      dates: {
-        ...this.props.dates,
-        [this.state.selectedDate]: {
-          ...objToUpdate,
-          [i.key]: !i.value
-        }
-      }
-    });
-  };
-  getDay() {
+  }
+  getHeading() {
     const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-    return days[new Date(this.state.selectedDate).getDay()] + ' ';
+    const date = this.state.selectedDate.replace(/-/g, '/');
+    return days[new Date(this.state.selectedDate).getDay()] + ' ' + date;
   }
 
   render() {
-    return (
-      <div className="App">
-        <h1>{this.getDay() + this.state.selectedDate}</h1>
+    return <div className="App">
+        <h1>{this.getHeading()}</h1>
         <div className="content">
           <button className="prev" onClick={this.previous}>
             &lsaquo;
@@ -88,8 +84,7 @@ class App extends Component {
             ))}
           </ul>
         </div>
-      </div>
-    );
+      </div>;
   }
 }
 
