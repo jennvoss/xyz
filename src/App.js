@@ -8,7 +8,7 @@ import {db} from './constants';
 class App extends Component {
   constructor() {
     super();
-    this.state = {loggedIn: false, loading: true, page: 'settings'};
+    this.state = {loggedIn: false, loading: true, page: ''};
   }
 
   componentWillMount() {
@@ -47,11 +47,11 @@ class App extends Component {
         {this.state.loading && <p>Loading</p>}
         {!this.state.loading && (
           <div>
-            <button class="nav" onClick={this.goTo}>
+            <button className="nav" onClick={this.goTo}>
               {this.state.page === 'home' ? 'Settings' : 'Close'}
             </button>
             {this.state.page === 'home' ? (
-              <Home uid={this.state.uid} />
+              <Home uid={this.state.uid} items={this.state.items} dates={this.state.dates} />
             ) : (
               <Settings uid={this.state.uid} items={this.state.items} />
             )}
