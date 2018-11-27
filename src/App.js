@@ -26,14 +26,18 @@ class App extends Component {
     const userData = db.ref('/users/' + this.state.uid);
     userData.on('value', snapshot => {
       const val = snapshot.val();
+
       this.setState({loading: false});
 
-      if (!val) return;
-      let page = val.items ? 'home' : 'settings';
+      if (!val || !val.items) {
+        this.setState({page: 'settings'});
+        return;
+      }
+
       this.setState({
         items: val.items || {},
         dates: val.dates || {},
-        page: this.state.page || page
+        page: this.state.page || 'home'
       });
     });
   }
